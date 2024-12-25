@@ -1,5 +1,7 @@
 package ocp;
 
+import java.time.*;
+
 import org.testng.*;
 import org.testng.annotations.*;
 
@@ -70,9 +72,25 @@ public class OCEntryTest {
         Assert.assertEquals(OCEntry.parseFields(line), expected);
     }
 
-    @Test
-    public void parseLocalDateTimeTest() {
-        throw new RuntimeException("Test not implemented");
+    @DataProvider
+    public Object[][] parseLocalDateTimeData() {
+        return new Object[][] {
+            {"01.10.2024", "13:45:00", "Aus", true, LocalDateTime.of(2024, 10, 1, 13, 45, 0)},
+            {"01.10.2024", "13:45:00", "Aus", false, LocalDateTime.of(2024, 10, 1, 13, 45, 0)},
+            {"01.10.2024", "13:45:00", "Ein", true, LocalDateTime.of(2024, 10, 1, 0, 0, 0)},
+            {"01.10.2024", "13:45:00", "Ein", false, LocalDateTime.of(2024, 10, 2, 0, 0, 0)}
+        };
+    }
+
+    @Test(dataProvider="parseLocalDateTimeData")
+    public void parseLocalDateTimeTest(
+        final String date,
+        final String time,
+        final String wholeDay,
+        final boolean start,
+        final LocalDateTime expected
+    ) {
+        Assert.assertEquals(OCEntry.parseLocalDateTime(date, time, wholeDay, start), expected);
     }
 
 }

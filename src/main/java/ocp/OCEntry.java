@@ -1,6 +1,7 @@
 package ocp;
 
 import java.time.*;
+import java.time.format.*;
 
 public record OCEntry(
     String subject,
@@ -11,14 +12,18 @@ public record OCEntry(
     AdditionalInformation additionalInformation
 ) {
 
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyyHH:mm:ss");
+
     static LocalDateTime parseLocalDateTime(
         final String date,
         final String time,
         final String wholeDay,
         final boolean start
     ) {
-        // TODO Auto-generated method stub
-        return null;
+        final boolean isWholeDay = "ein".equals(wholeDay.toLowerCase());
+        final String adjustedTime = isWholeDay ? "00:00:00" : time;
+        final LocalDateTime result = LocalDateTime.parse(date + adjustedTime, OCEntry.FORMAT);
+        return isWholeDay && !start ? result.plusDays(1) : result;
     }
 
     public static OCEntry parseEntry(final String line) {
