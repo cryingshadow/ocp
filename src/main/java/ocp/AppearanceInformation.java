@@ -1,5 +1,7 @@
 package ocp;
 
+import java.util.*;
+
 public record AppearanceInformation(
     boolean privateEntry,
     String showAs,
@@ -19,11 +21,33 @@ public record AppearanceInformation(
     }
 
     private static String[] parseCategories(final String categories) {
-        // TODO Auto-generated method stub
-        return null;
+        return AdditionalInformation.parseArray(categories);
     }
 
     private static boolean parsePrivateEntry(final String privateEntry) {
-        // TODO Auto-generated method stub
+        return OCEntry.parseBoolean(privateEntry);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o instanceof AppearanceInformation) {
+            final AppearanceInformation other = (AppearanceInformation)o;
+            return this.privateEntry() == other.privateEntry()
+                && this.showAs().equals(other.showAs())
+                && Arrays.deepEquals(this.categories(), other.categories())
+                && this.priority().equals(other.priority())
+                && this.classification().equals(other.classification());
+        }
         return false;
-    }}
+    }
+
+    @Override
+    public int hashCode() {
+        return Boolean.hashCode(this.privateEntry()) * 3
+            + this.showAs().hashCode() * 5
+            + Arrays.hashCode(this.categories()) * 7
+            + this.priority().hashCode() * 11
+            + this.classification().hashCode() * 13;
+    }
+
+}

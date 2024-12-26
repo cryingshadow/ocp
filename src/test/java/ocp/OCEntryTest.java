@@ -1,11 +1,51 @@
 package ocp;
 
 import java.time.*;
+import java.util.Optional;
 
 import org.testng.*;
 import org.testng.annotations.*;
 
 public class OCEntryTest {
+
+    @DataProvider
+    public Object[][] parseEntryData() {
+        return new Object[][] {
+            {
+                "\"Mittagspause\",\"19.11.2025\",\"13:00:00\",\"19.11.2025\",\"13:45:00\",\"Aus\",\"Aus\",\"19.11.2025\",\"12:45:00\",\"Thomas Ströder\",,,,,\" \n\",,\"\",\"Normal\",\"Aus\",,\"Normal\",\"4\"",
+                new OCEntry(
+                    "Mittagspause",
+                    LocalDateTime.of(2025, 11, 19, 13, 0),
+                    LocalDateTime.of(2025, 11, 19, 13, 45),
+                    "Thomas Ströder",
+                    " \n",
+                    new AdditionalInformation(
+                        new MeetingInformation(
+                            new String[] {},
+                            new String[] {},
+                            Optional.empty(),
+                            Optional.empty()
+                        ),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        new AppearanceInformation(
+                            false,
+                            "4",
+                            new String[] {},
+                            "Normal",
+                            "Normal"
+                        )
+                    )
+                )
+            }
+        };
+    }
+
+    @Test(dataProvider="parseEntryData")
+    public void parseEntryTest(final String line, final OCEntry expected) {
+        Assert.assertEquals(OCEntry.parseEntry(line), expected);
+    }
 
     @DataProvider
     public Object[][] parseFieldsData() {

@@ -25,14 +25,19 @@ public record AdditionalInformation(
         );
     }
 
-    private static Optional<Integer> parseTravelKilometers(final String travelKilometers) {
-        // TODO Auto-generated method stub
-        return null;
+    static String[] parseArray(final String array) {
+        if (array == null) {
+            return new String[] {};
+        }
+        return array.split(";");
+    }
+
+    static Optional<String> parseNullable(final String text) {
+        return text == null || text.isBlank() ? Optional.empty() : Optional.of(text);
     }
 
     private static Optional<String> parseAccountingInformation(final String accountingInformation) {
-        // TODO Auto-generated method stub
-        return null;
+        return AdditionalInformation.parseNullable(accountingInformation);
     }
 
     private static Optional<LocalDateTime> parseReminder(
@@ -40,8 +45,14 @@ public record AdditionalInformation(
         final String reminderDate,
         final String reminderTime
     ) {
-        // TODO Auto-generated method stub
-        return null;
+        if (OCEntry.parseBoolean(isReminderSet)) {
+            return Optional.of(OCEntry.parseLocalDateTime(reminderDate, reminderTime, "Aus", true));
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<Integer> parseTravelKilometers(final String travelKilometers) {
+        return AdditionalInformation.parseNullable(travelKilometers).map(Integer::parseInt);
     }
 
 }
