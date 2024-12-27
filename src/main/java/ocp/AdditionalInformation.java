@@ -55,4 +55,16 @@ public record AdditionalInformation(
         return AdditionalInformation.parseNullable(travelKilometers).map(Integer::parseInt);
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "%s,\n\"reminder\": \"%s\",\n\"accountingInformation\": \"%s\",\n\"travelKilometers\": \"%s\",\n%s",
+            this.meetingInformation(),
+            this.reminder(),
+            this.accountingInformation(),
+            this.travelKilometers(),
+            this.appearanceInformation()
+        );
+    }
+
 }

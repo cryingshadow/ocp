@@ -4,7 +4,7 @@ import java.util.*;
 
 public record AppearanceInformation(
     boolean privateEntry,
-    String showAs,
+    OCShowType showAs,
     String[] categories,
     String priority,
     String classification
@@ -13,7 +13,7 @@ public record AppearanceInformation(
     static AppearanceInformation parse(final String[] fields) {
         return new AppearanceInformation(
             AppearanceInformation.parsePrivateEntry(fields[CSVField.PRIVATE_ENTRY.column]),
-            fields[CSVField.SHOW_AS.column],
+            OCShowType.parse(fields[CSVField.SHOW_AS.column]),
             AppearanceInformation.parseCategories(fields[CSVField.CATEGORIES.column]),
             fields[CSVField.PRIORITY.column],
             fields[CSVField.CLASSIFICATION.column]
@@ -48,6 +48,18 @@ public record AppearanceInformation(
             + Arrays.hashCode(this.categories()) * 7
             + this.priority().hashCode() * 11
             + this.classification().hashCode() * 13;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "\"privateEntry\": %s,\n\"showAs\": \"%s\",\n\"categories\": %s,\n\"priority\": \"%s\",\n\"classification\": \"%s\"",
+            String.valueOf(this.privateEntry()),
+            this.showAs(),
+            Arrays.toString(this.categories()),
+            this.priority(),
+            this.classification()
+        );
     }
 
 }

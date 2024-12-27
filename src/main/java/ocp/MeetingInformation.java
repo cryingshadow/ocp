@@ -46,4 +46,15 @@ public record MeetingInformation(
             + this.resources().hashCode() * 11;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "\"requiredParticipants\": %s,\n\"optionalParticipants\": %s,\n\"place\": \"%s\",\n\"resources\": \"%s\"",
+            Arrays.toString(this.requiredParticipants()),
+            Arrays.toString(this.optionalParticipants()),
+            this.place(),
+            this.resources()
+        );
+    }
+
 }

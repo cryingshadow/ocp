@@ -31,7 +31,7 @@ public class OCEntryTest {
                         Optional.empty(),
                         new AppearanceInformation(
                             false,
-                            "4",
+                            OCShowType.ELSEWHERE,
                             new String[] {},
                             "Normal",
                             "Normal"
